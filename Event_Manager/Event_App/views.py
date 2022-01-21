@@ -51,13 +51,15 @@ def eventReg(request):
     
 def participantReg(request):
     if request.method == 'GET':
-        now = datetime.datetime.now()
+        date_time = datetime.datetime.now()
         info = {
-            'event_info' : EventReg.objects.all(),
-            'now' : now
+            'date_time' : date_time,
+            'event_info' : EventReg.objects.all()
         }
-    
-    return render(request, 'participantReg.html', info)
+        return render(request, 'participantReg.html', info)
+    elif request.method == 'POST':
+        return render(request, 'participantReg.html', )
+
     
 def dashboard(request):
     return render(request , 'dashboard.html' )

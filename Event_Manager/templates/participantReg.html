@@ -2,35 +2,114 @@
 {% block title %}Participant Registration{% endblock title %}
 {% block body %}
 
-<div class="container py-5">
-    
+
+<script>
+    function group_or_not(value) {
+        if(value == "individual"){
+            document.getElementById("gr").style.display = 'none';
+            document.getElementById("num_of_people").value = 1;
+            document.getElementById("num_of_people").required = false;
+        } 
+        else if (value == "group"){
+            document.getElementById("gr").style.display = 'flex';
+            document.getElementById("num_of_people").value = 2;
+            document.getElementById("num_of_people").required = true;
+        }
+    }
+</script>
+
+<div class="container py-5" style="background-color:Bisque;">
+
     <h1 class="text-center">You can register in this Events : </h1>
     {% for event in event_info %}
-        {% if now.date < event.registration_deadline.date %} 
-            <br>
-            <h5 class="event_info">
-                {{ event.event_name }}
-            </h5>
-                <div class="event_info">
-                    Description: {{ event.description }}
-                </div>
-                <div class="event_info">Date: {{ event.date_from }} to {{ event.date_to }}</div>
-                <div class="event_info">Registration Deadline: {{ event.registration_deadline }}</div>
-                <div class="event_info">Location : {{ event.location }}</div> 
-                <div class="event_info" type="url">Poster Link : {{ event.poster_link }}</div> 
-            
-        {% elif now.date == event.registration_deadline.date %}
-            {% if now.time < event.registration_deadline.time %} 
-            <br><h5 class="event_info">{{ event.event_name }}</h5>
-                <div class="event_info">
-                    Description: {{ event.description }}
-                </div>
-                <div class="event_info">Date: {{ event.date_from }} to {{ event.date_to }}</div>
-                <div class="event_info">Registration Deadline: {{ event.registration_deadline }}</div>
-                <div class="event_info">Location: {{ event.location }}</div> 
-            {% endif %}
-        {% endif %}
-    {% endfor %}
+    {% if date_time.date < event.registration_deadline.date %} <br>
+        <hr style="height:5px">
+        <h5 class="event_info">
+            {{ event.event_name }}
+        </h5>
+        <div class="event_info">
+            Description: {{ event.description }}
+        </div>
+        <div class="event_info">Date: {{ event.date_from }} to {{ event.date_to }}</div>
+        <div class="event_info">Registration Deadline: {{ event.registration_deadline }}</div>
+        <div class="event_info">Location : {{ event.location }}</div>
+        <div class="event_info" type="url">Poster Link : <a href={{event.poster_link}}> Open Poster </a></div>
 
+
+        {% elif date_time.date == event.registration_deadline.date %}
+        {% if date_time.time < event.registration_deadline.time %} <br>
+            <hr style="height:5px">
+            <h5 class="event_info">{{ event.event_name }}</h5>
+            <div class="event_info">
+                Description: {{ event.description }}
+            </div>
+            <div class="event_info">Date: {{ event.date_from }} to {{ event.date_to }}</div>
+            <div class="event_info">Registration Deadline: {{ event.registration_deadline }}</div>
+            <div class="event_info">Location: {{ event.location }}</div>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+            <br>
+            <hr style="height:5px">
 </div>
+<div class="container py-5">
+    <h1 class="text-center">Participant Registration Form</h1>
+    <form method="post" action="/participantReg">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Your Name:</span>
+            <input name="participant_name" id="participant_name" type="text" class="form-control" placeholder="Name"
+                required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Contact No. :</span>
+            <input name="participant_contact" id="participant_contact" type="text" class="form-control"
+                placeholder="Contact" pattern="[1-9]{1}[0-9]{9}" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Email ID : </span>
+            <input name="participant_email" id="participant_email" type="email" class="form-control"
+                placeholder="email@example.com" required>
+            </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Select Event :</span>
+                {% for event in event_info %}
+                        {% if date_time.date < event.registration_deadline.date %}
+                        <div class="input-group-text">
+                            <input class="form-check-input mt-0" type="radio" id="{{ event.event_name }}" name="select_event" required>
+                            <label>&nbsp{{ event.event_name }} &nbsp</label>
+                        </div>
+                        {% elif now.date == event.registration_deadline.date %}
+                            {% if now.time < event.registration_deadline.time %}
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="radio" id="{{ event.event_name }}" name="select_event" required>
+                                <label>&nbsp{{ event.event_name }} &nbsp</label>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Registration Type:</span>
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" type="radio" name="registration_type" id="individual" value="individual"
+                    onclick="group_or_not(this.value)" required>
+                <label>&nbsp Individual &nbsp</label>
+            </div>
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" type="radio" name="registration_type" id="group" value="group"
+                    onclick="group_or_not(this.value)" required>
+                <label>&nbsp Group &nbsp</label>
+            </div>
+        </div>
+        <div class="input-group mb-3" id="gr">
+            <span class="input-group-text" id="basic-addon1" for="num_of_people">Number of people :</span>
+            <input type="number" min="2" max="20" id="num_of_people" name="num_of_people">
+        </div>
+        <center><button  class="btn btn-primary mb-5" type="submit">Submit</button></center>
+    </form>
+</div>
+
+
 {% endblock body %}
