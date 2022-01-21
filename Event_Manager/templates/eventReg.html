@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Event Registration{% endblock title %}
+{% block body %}
+
+<div class="container py-5">
+    <h1 class="text-center">Event Registration Form</h1>
+    <form method="post" action="/eventReg">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Event Name:</span>
+            <input name="event_name" id="event_name" type="text" class="form-control" placeholder="Event Name" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Description :</span>
+            <textarea name="description" id="description" type="text" class="form-control" cols="30" rows="2"
+                required></textarea>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Location : </span>
+            <input name="location" id="location" type="text" class="form-control" placeholder="Location" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Poster Link : </span>
+            <input type="url" id="poster_link" name="poster_link" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">From : </span>
+            <input type="datetime-local" id="date_from" name="date_from" required>
+
+            <span class="input-group-text" id="basic-addon1">To : </span>
+            <input type="datetime-local" id="date_to" name="date_to" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Registration Deadline : </span>
+            <input type="datetime-local" name="registration_deadline" id="registration_deadline" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Host Email : </span>
+            <input name="host_email" id="host_email" type="email" class="form-control" placeholder="email@example.com"
+                required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Host Password : </span>
+            <input name="host_password" id="host_password" type="password" class="form-control" placeholder="Password"
+                required>
+        </div>
+        <center>
+        <button class="btn btn-primary" type="submit">Submit</button></center>
+    </form>
+</div>
+{% endblock body %}

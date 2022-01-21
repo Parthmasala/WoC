@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Participant Registration{% endblock title %}
+{% block body %}
+
+<div class="container py-5">
+    
+    <h1 class="text-center">You can register in this Events : </h1>
+    {% for event in event_info %}
+        {% if now.date < event.registration_deadline.date %} 
+            <br>
+            <h5 class="event_info">
+                {{ event.event_name }}
+            </h5>
+                <div class="event_info">
+                    Description: {{ event.description }}
+                </div>
+                <div class="event_info">Date: {{ event.date_from }} to {{ event.date_to }}</div>
+                <div class="event_info">Registration Deadline: {{ event.registration_deadline }}</div>
+                <div class="event_info">Location : {{ event.location }}</div> 
+                <div class="event_info" type="url">Poster Link : {{ event.poster_link }}</div> 
+            
+        {% elif now.date == event.registration_deadline.date %}
+            {% if now.time < event.registration_deadline.time %} 
+            <br><h5 class="event_info">{{ event.event_name }}</h5>
+                <div class="event_info">
+                    Description: {{ event.description }}
+                </div>
+                <div class="event_info">Date: {{ event.date_from }} to {{ event.date_to }}</div>
+                <div class="event_info">Registration Deadline: {{ event.registration_deadline }}</div>
+                <div class="event_info">Location: {{ event.location }}</div> 
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+</div>
+{% endblock body %}
