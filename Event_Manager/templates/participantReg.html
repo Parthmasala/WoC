@@ -2,15 +2,14 @@
 {% block title %}Participant Registration{% endblock title %}
 {% block body %}
 
-
 <script>
-    function group_or_not(value) {
-        if(value == "individual"){
+    function group_or_not(check) {
+        if(check == "individual"){
             document.getElementById("gr").style.display = 'none';
-            document.getElementById("num_of_people").value = 1;
             document.getElementById("num_of_people").required = false;
+            document.getElementById("num_of_people").value = 1;
         } 
-        else if (value == "group"){
+        else if (check == "group"){
             document.getElementById("gr").style.display = 'flex';
             document.getElementById("num_of_people").value = 2;
             document.getElementById("num_of_people").required = true;
@@ -51,7 +50,7 @@
             {% endfor %}
             <br>
             <hr style="height:5px">
-</div>
+    </div>
 <div class="container py-5">
     <h1 class="text-center">Participant Registration Form</h1>
     <form method="post" action="/participantReg">
@@ -77,13 +76,13 @@
                 {% for event in event_info %}
                         {% if date_time.date < event.registration_deadline.date %}
                         <div class="input-group-text">
-                            <input class="form-check-input mt-0" type="radio" id="{{ event.event_name }}" name="select_event" required>
+                            <input class="form-check-input mt-0" type="radio" id="{{ event.event_name }}" name="select_event" value="{{event.id}}" required>
                             <label>&nbsp{{ event.event_name }} &nbsp</label>
                         </div>
                         {% elif now.date == event.registration_deadline.date %}
                             {% if now.time < event.registration_deadline.time %}
                             <div class="input-group-text">
-                                <input class="form-check-input mt-0" type="radio" id="{{ event.event_name }}" name="select_event" required>
+                                <input class="form-check-input mt-0" type="radio" id="{{ event.event_name }}" name="select_event" value="{{event.id}}" required>
                                 <label>&nbsp{{ event.event_name }} &nbsp</label>
                             </div>
                         {% endif %}
@@ -92,20 +91,20 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Registration Type:</span>
-            <div class="input-group-text">
+            <div class="input-group-text"> 
                 <input class="form-check-input mt-0" type="radio" name="registration_type" id="individual" value="individual"
-                    onclick="group_or_not(this.value)" required>
+                    onchange="group_or_not(value)" required>
                 <label>&nbsp Individual &nbsp</label>
             </div>
             <div class="input-group-text">
                 <input class="form-check-input mt-0" type="radio" name="registration_type" id="group" value="group"
-                    onclick="group_or_not(this.value)" required>
+                onchange="group_or_not(value)" required>
                 <label>&nbsp Group &nbsp</label>
             </div>
         </div>
         <div class="input-group mb-3" id="gr">
             <span class="input-group-text" id="basic-addon1" for="num_of_people">Number of people :</span>
-            <input type="number" min="2" max="20" id="num_of_people" name="num_of_people">
+            <input type="number" min="1" max="20" id="num_of_people" name="num_of_people">
         </div>
         <center><button  class="btn btn-primary mb-5" type="submit">Submit</button></center>
     </form>

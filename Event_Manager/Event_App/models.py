@@ -19,6 +19,9 @@ class ParticipantReg(models.Model):
     participant_name = models.CharField(max_length=30)
     participant_contact = models.CharField(max_length=10)
     participant_email = models.CharField(max_length=20)
-    select_event = models.CharField(max_length=30)
+    selected_event_id = models.PositiveIntegerField(default=0)
+    selected_event_name = models.CharField(max_length=30)
     registration_type = models.CharField(max_length=30)
-    num_of_people = models.PositiveIntegerField()
+    num_of_people = models.PositiveIntegerField() 
+    def __str__(self):
+        return self.participant_name
