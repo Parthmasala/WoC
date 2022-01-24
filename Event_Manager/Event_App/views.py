@@ -30,6 +30,13 @@ def eventReg(request):
         elif request.POST.get('date_from') < request.POST.get('registration_deadline'):
             check=0
 
+        date_time = datetime.datetime.now()
+        date_time = str(date_time)
+        if request.POST.get('date_from') < date_time:
+            check=0
+        elif request.POST.get('registration_deadline') < date_time:
+            check=0
+
         if check == 0:
             messages.warning(request, "Please enter proper date and time.")
             return render(request , 'eventReg.html' )
