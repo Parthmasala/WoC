@@ -9,6 +9,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.widgets import AdminSplitDateTime, AdminDateWidget, AdminTimeWidget
+import os
+from twilio.rest import Client
 
 # Create your views here.
 def index(request):
@@ -110,6 +112,45 @@ def participantReg(request):
                 num_of_people = num_of_people,
             )
             participant_detail.save()
+
+            email_from = settings.EMAIL_HOST_USER
+            email_to = [participant_email]
+            subject = 'Participating Event Information'
+            message = "Hello " + participant_name \
+                    + "\n" + "You have registered for event - " + selected_event_name \
+                    + "\n" + "Your ID : " + str(participant_detail.id) \
+                    + "\n" + "Enail ID : " + participant_email \
+                    + "\n" + "Event Details :- " \
+                    + "\n" + "Description : " + event_by_id.description \
+                    + "\n" +  "Location : " + event_by_id.location \
+                    + "\n" +  "Poster link : " + event_by_id.poster_link \
+                    + "\n" + "From: " + str(event_by_id.date_from) + " to " + str(event_by_id.date_to) \
+                    + "\n" + "Registration Type : " + registration_type \
+                    + "\n" + "Booked for - " + num_of_people + " people" \
+                    + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment"
+            send_mail(subject, message, email_from , email_to)
+
+            account_sid = 'ACb0e9679e53c92a559025177c69bd9c76'
+            auth_token = '2f2e2d595164f073b9dab827768e0e79'
+            client = Client(account_sid, auth_token)
+
+            client.messages.create(
+                                body= "\n" + "\n" + "Hello " + participant_name \
+                                + "\n" + "You have registered for event - " + selected_event_name \
+                                + "\n" + "Your ID : " + str(participant_detail.id) \
+                                + "\n" + "Enail ID : " + participant_email \
+                                + "\n" + "Event Details :- " \
+                                + "\n" + "Description : " + event_by_id.description \
+                                + "\n" +  "Location : " + event_by_id.location \
+                                + "\n" +  "Poster link : " + event_by_id.poster_link \
+                                + "\n" + "From: " + str(event_by_id.date_from) + " to " + str(event_by_id.date_to) \
+                                + "\n" + "Registration Type : " + registration_type \
+                                + "\n" + "Booked for - " + num_of_people + " people" \
+                                + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment",
+                                from_='+16072846013',
+                                to='+91' + participant_contact
+                            )
+            messages.success(request, 'Thank You! for registering in the event')
             return render(request, 'participantReg.html' )
 
     
