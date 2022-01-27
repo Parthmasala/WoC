@@ -4,7 +4,7 @@ from tabnanny import check
 from urllib import request
 from django.shortcuts import render , HttpResponse
 from datetime import datetime
-from Event_App.models import EventReg,ParticipantReg
+from Event_App.models import EventReg,ParticipantReg,ContactReg
 import datetime,time,os
 from django.core.mail import send_mail
 from django.conf import settings
@@ -191,4 +191,22 @@ def dashboard(request):
     return render(request , 'dashboard.html' )
         
 def contact(request):
+    if request.method == 'POST':
+        contact_name = request.POST.get('contact_name')
+        contact_email = request.POST.get('contact_email')
+        contact_description = request.POST.get('contact_description')
+        query_detail = ContactReg(
+            contact_name = contact_name,
+            contact_email=contact_email,
+            contact_description=contact_description,
+            )
+        query_detail.save()
+        messages.success(request, 'Thank You for your support! We will get back to you.')
+        # email_from = settings.EMAIL_HOST_USER
+        # email_to = [contact_email]
+        # subject = 'Query is under process'
+        # message = "Dear " + contact_name + " , "\
+        # + "\n" + "Thank You for writing to us.And we will try to get back to you as soon as possible." \
+        # + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment"
+        # send_mail(subject, message, email_from , email_to)
     return render(request , 'contact.html' )

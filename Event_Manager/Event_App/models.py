@@ -25,3 +25,8 @@ class ParticipantReg(models.Model):
     num_of_people = models.PositiveIntegerField() 
     def __str__(self):
         return self.participant_name
+
+class ContactReg(models.Model):
+    contact_name = models.CharField(max_length=30) 
+    contact_email = models.CharField(max_length=30)
+    contact_description = models.TextField()
