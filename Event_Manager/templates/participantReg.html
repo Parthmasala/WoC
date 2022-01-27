@@ -19,34 +19,34 @@
     }
 </script>
 
-<div class="container py-5" style="background-color:Cornsilk;">
+<div class="container py-5" style="background-color:bisque">
 
     <h1 class="text-center">You can register in this Events : </h1>
-    {% for event in event_info %}
+    {% for event in event_detail %}
     {% if date_time.date < event.registration_deadline.date %} <br>
         <hr style="height:5px">
-        <h5 class='event_info' >
+        <h5 class='event_detail' >
             {{ event.event_name }}
         </h5>
-        <div class='event_info' >
+        <div class='event_detail' >
             Description: {{ event.description }}
         </div>
-        <div class='event_info' >Date: {{ event.date_from }} to {{ event.date_to }}</div>
-        <div class='event_info' >Registration Deadline: {{ event.registration_deadline }}</div>
-        <div class='event_info' >Location : {{ event.location }}</div>
-        <div class='event_info'  type="url">Poster Link : <a href={{event.poster_link}}> Open Poster </a></div>
+        <div class='event_detail' >Date: {{ event.date_from }} to {{ event.date_to }}</div>
+        <div class='event_detail' >Registration Deadline: {{ event.registration_deadline }}</div>
+        <div class='event_detail' >Location : {{ event.location }}</div>
+        <div class='event_detail'  type="url">Poster Link : <a href={{event.poster_link}}> Open Poster </a></div>
 
 
         {% elif date_time.date == event.registration_deadline.date %}
         {% if date_time.time < event.registration_deadline.time %} <br>
             <hr style="height:5px">
-            <h5 class='event_info' >{{ event.event_name }}</h5>
-            <div class='event_info' >
+            <h5 class='event_detail' >{{ event.event_name }}</h5>
+            <div class='event_detail' >
                 Description: {{ event.description }}
             </div>
-            <div class='event_info' >Date: {{ event.date_from }} to {{ event.date_to }}</div>
-            <div class='event_info' >Registration Deadline: {{ event.registration_deadline }}</div>
-            <div class='event_info' >Location: {{ event.location }}</div>
+            <div class='event_detail' >Date: {{ event.date_from }} to {{ event.date_to }}</div>
+            <div class='event_detail' >Registration Deadline: {{ event.registration_deadline }}</div>
+            <div class='event_detail' >Location: {{ event.location }}</div>
             {% endif %}
             {% endif %}
             {% endfor %}
@@ -75,7 +75,7 @@
 
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Select Event :</span>
-                {% for event in event_info %}
+                {% for event in event_detail %}
                 {% if date_time.date < event.registration_deadline.date %} <div class="input-group-text">
                     <input class="form-check-input mt-0" type="radio" id="{{ event.event_name }}" name="select_event"
                         value="{{event.id}}" required>

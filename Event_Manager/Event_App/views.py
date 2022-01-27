@@ -1,5 +1,6 @@
 from email import message
 from pyexpat.errors import messages
+from tabnanny import check
 from urllib import request
 from django.shortcuts import render , HttpResponse
 from datetime import datetime
@@ -63,42 +64,42 @@ def eventReg(request):
                 )
             event_detail.save()
             messages.success(request, 'Your Event has been Registered.Thank You!')
-            email_from = settings.EMAIL_HOST_USER
-            email_to = [host_email]
-            subject = 'Information of Registered Event'
-            message = "Event - " + event_name \
-            + "\n" + "Description : " + description \
-            + "\n" +  "Location : " + location \
-            + "\n" + "From: " + date_from + " to " + date_to \
-            + "\n" +  "Registration Deadline : " + registration_deadline \
-            + "\n" + "Poster for event : " + poster_link \
-            + "\n" + "Event ID : " + str(event_detail.id) \
-            + "\n" + "Your login Password : " + host_password \
-            + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment"
-            send_mail(subject, message, email_from , email_to)
+            # email_from = settings.EMAIL_HOST_USER
+            # email_to = [host_email]
+            # subject = 'Information of Registered Event'
+            # message = "Event - " + event_name \
+            # + "\n" + "Description : " + description \
+            # + "\n" +  "Location : " + location \
+            # + "\n" + "From: " + date_from + " to " + date_to \
+            # + "\n" +  "Registration Deadline : " + registration_deadline \
+            # + "\n" + "Poster for event : " + poster_link \
+            # + "\n" + "Event ID : " + str(event_detail.id) \
+            # + "\n" + "Your login Password : " + host_password \
+            # + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment"
+            # send_mail(subject, message, email_from , email_to)
     return render(request , 'eventReg.html' )
     
 def participantReg(request):
     if request.method == 'GET':
         date_time = datetime.datetime.now()
-        info = {
+        detail = {
             'date_time' : date_time,
-            'event_info' : EventReg.objects.all()
+            'event_detail' : EventReg.objects.all()
         }
-        return render(request, 'participantReg.html', info)
+        return render(request, 'participantReg.html', detail)
     elif request.method == 'POST':
-        participant_info = ParticipantReg.objects.all()
+        participant_detail = ParticipantReg.objects.all()
         check=1
-        for participant in participant_info:
+        for participant in participant_detail:
             old_participant_email = participant.participant_email
             if old_participant_email == request.POST.get('participant_email') :
                 if participant.selected_event_id == int(request.POST.get('select_event')) :
                     check=0
-                    messages.warning(request, "You are already registered for this event.Please try with other Email id.")
                     break
 
         if check == 0:
-             return render(request , 'participantReg.html' )
+            messages.warning(request, "You are already registered for this event.Please try with other Email id.")
+            return render(request , 'participantReg.html' )
         elif check == 1 :
             participant_name = request.POST.get('participant_name')
             participant_contact = request.POST.get('participant_contact')
@@ -120,48 +121,75 @@ def participantReg(request):
             )
             participant_detail.save()
 
-            email_from = settings.EMAIL_HOST_USER
-            email_to = [participant_email]
-            subject = 'Participating Event Information'
-            message = "Hello " + participant_name \
-                    + "\n" + "You have registered for event - " + selected_event_name \
-                    + "\n" + "Your ID : " + str(participant_detail.id) \
-                    + "\n" + "Enail ID : " + participant_email \
-                    + "\n" + "Event Details :- " \
-                    + "\n" + "Description : " + event_by_id.description \
-                    + "\n" +  "Location : " + event_by_id.location \
-                    + "\n" +  "Poster link : " + event_by_id.poster_link \
-                    + "\n" + "From: " + str(event_by_id.date_from) + " to " + str(event_by_id.date_to) \
-                    + "\n" + "Registration Type : " + registration_type \
-                    + "\n" + "Booked for - " + num_of_people + " people" \
-                    + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment"
-            send_mail(subject, message, email_from , email_to)
+            # email_from = settings.EMAIL_HOST_USER
+            # email_to = [participant_email]
+            # subject = 'Participating Event Information'
+            # message = "Hello " + participant_name \
+            #         + "\n" + "You have registered for event - " + selected_event_name \
+            #         + "\n" + "Your ID : " + str(participant_detail.id) \
+            #         + "\n" + "Enail ID : " + participant_email \
+            #         + "\n" + "Event Details :- " \
+            #         + "\n" + "Description : " + event_by_id.description \
+            #         + "\n" +  "Location : " + event_by_id.location \
+            #         + "\n" +  "Poster link : " + event_by_id.poster_link \
+            #         + "\n" + "From: " + str(event_by_id.date_from) + " to " + str(event_by_id.date_to) \
+            #         + "\n" + "Registration Type : " + registration_type \
+            #         + "\n" + "Booked for - " + num_of_people + " people" \
+            #         + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment"
+            # send_mail(subject, message, email_from , email_to)
 
-            account_sid = 'ACb0e9679e53c92a559025177c69bd9c76'
-            auth_token = '2f2e2d595164f073b9dab827768e0e79'
-            client = Client(account_sid, auth_token)
+            # account_sid = ''
+            # auth_token = ''
+            # client = Client(account_sid, auth_token)
 
-            client.messages.create(
-                                body= "\n" + "\n" + "Hello " + participant_name \
-                                + "\n" + "You have registered for event - " + selected_event_name \
-                                + "\n" + "Your ID : " + str(participant_detail.id) \
-                                + "\n" + "Enail ID : " + participant_email \
-                                + "\n" + "Event Details :- " \
-                                + "\n" + "Description : " + event_by_id.description \
-                                + "\n" +  "Location : " + event_by_id.location \
-                                + "\n" +  "Poster link : " + event_by_id.poster_link \
-                                + "\n" + "From: " + str(event_by_id.date_from) + " to " + str(event_by_id.date_to) \
-                                + "\n" + "Registration Type : " + registration_type \
-                                + "\n" + "Booked for - " + num_of_people + " people" \
-                                + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment",
-                                from_='+16072846013',
-                                to='+91' + participant_contact
-                            )
+            # client.messages.create(
+            #                     body= "\n" + "\n" + "Hello " + participant_name \
+            #                     + "\n" + "You have registered for event - " + selected_event_name \
+            #                     + "\n" + "Your ID : " + str(participant_detail.id) \
+            #                     + "\n" + "Enail ID : " + participant_email \
+            #                     + "\n" + "Event Details :- " \
+            #                     + "\n" + "Description : " + event_by_id.description \
+            #                     + "\n" +  "Location : " + event_by_id.location \
+            #                     + "\n" +  "Poster link : " + event_by_id.poster_link \
+            #                     + "\n" + "From: " + str(event_by_id.date_from) + " to " + str(event_by_id.date_to) \
+            #                     + "\n" + "Registration Type : " + registration_type \
+            #                     + "\n" + "Booked for - " + num_of_people + " people" \
+            #                     + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment",
+            #                     from_='+16072846013',
+            #                     to='+91' + participant_contact
+            #                 )
             messages.success(request, 'Thank You! for registering in the event')
             return render(request, 'participantReg.html' )
 
     
 def dashboard(request):
+    # if request.method == 'GET':
+    #     return render(request, 'dashboard.html')
+    if request.method == 'POST':
+        event_detail = EventReg.objects.all()
+        check = 0
+        for event in event_detail:
+            if str(event.id) == str(request.POST.get('event_id')):
+                if str(event.host_password) == str(request.POST.get('dashboard_password')):
+                    check = 1
+                    break
+                else:
+                    check = 0
+                    break
+
+        if check == 0 :
+            messages.error(request, "Please enter proper ID and Password!")
+            return render(request , 'dashboard.html' )
+        elif check == 1:
+            try:
+                participant_detail = ParticipantReg.objects.filter(selected_event_id=request.POST.get('event_id'))
+            except ParticipantReg.DoesNotExist:
+                participant_detail = None
+            
+            detail = {
+                'participant_detail' : participant_detail
+            }
+            return render(request, 'dashboard.html', detail)
     return render(request , 'dashboard.html' )
         
 def contact(request):
