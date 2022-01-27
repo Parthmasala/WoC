@@ -8,15 +8,14 @@
         {% csrf_token %}
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Event ID : </span>
-            <input name="event_id" id="event_id" type="text" class="form-control" placeholder="ID Number"
-                required>
+            <input name="event_id" id="event_id" type="text" class="form-control" placeholder="ID Number" required>
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Host Password : </span>
-            <input name="dashboard_password" id="dashboard_password" type="password" class="form-control" placeholder="Password"
-                required>
+            <input name="dashboard_password" id="dashboard_password" type="password" class="form-control"
+                placeholder="Password" required>
         </div>
-        <center><button  class="btn btn-primary mb-5" type="submit">Submit</button></center>
+        <center><button class="btn btn-primary mb-5" type="submit">Submit</button></center>
     </form>
 </div>
 
@@ -32,15 +31,15 @@
 {% if participant_detail %}
 <div class="container py-5">
     <table class="table table-bordered" style="background-color:Bisque">
-    <thead>
-        <tr>
-            <th scope="col">Participant-ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Contact no.</th>
-            <th scope="col">Email-ID</th>
-            <th scope="col">Participant Type</th>
-            <th scope="col">No. of People</th>
-        </tr>
+        <thead>
+            <tr>
+                <th scope="col">Participant-ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Contact no.</th>
+                <th scope="col">Email-ID</th>
+                <th scope="col">Participant Type</th>
+                <th scope="col">No. of People</th>
+            </tr>
         </thead>
         <tbody>
             {% for participant in participant_detail %}
@@ -55,7 +54,7 @@
             {% endfor %}
         </tbody>
     </table>
-    </div>
+</div>
 {% endif %}
 
 {% endblock body %}

@@ -158,6 +158,7 @@ def participantReg(request):
             #                     from_='+16072846013',
             #                     to='+91' + participant_contact
             #                 )
+            #
             messages.success(request, 'Thank You! for registering in the event')
             return render(request, 'participantReg.html' )
 
