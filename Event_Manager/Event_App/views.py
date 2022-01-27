@@ -5,12 +5,11 @@ from urllib import request
 from django.shortcuts import render , HttpResponse
 from datetime import datetime
 from Event_App.models import EventReg,ParticipantReg
-import datetime,time
+import datetime,time,os
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.widgets import AdminSplitDateTime, AdminDateWidget, AdminTimeWidget
-import os
 from twilio.rest import Client
 
 # Create your views here.
@@ -171,15 +170,13 @@ def dashboard(request):
         check = 0
         for event in event_detail:
             if str(event.id) == str(request.POST.get('event_id')):
-                if str(event.host_password) == str(request.POST.get('dashboard_password')):
-                    check = 1
-                    break
-                else:
-                    check = 0
-                    break
+                if str(event.host_email) == str(request.POST.get('dashboard_email')):
+                    if str(event.host_password) == str(request.POST.get('dashboard_password')):
+                        check = 1
+                        break
 
         if check == 0 :
-            messages.error(request, "Please enter proper ID and Password!")
+            messages.error(request, "Please enter proper ID , Email and Password!")
             return render(request , 'dashboard.html' )
         elif check == 1:
             try:
