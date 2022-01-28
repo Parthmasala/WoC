@@ -30,3 +30,5 @@ class ContactReg(models.Model):
     contact_name = models.CharField(max_length=30) 
     contact_email = models.CharField(max_length=30)
     contact_description = models.TextField()
+    def __str__(self):
+        return self.contact_name

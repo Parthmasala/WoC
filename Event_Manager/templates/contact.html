@@ -7,9 +7,10 @@
     <h5 class="container py-5">For any query you can mail us : <b>202001244@daiict.ac.in</b>
         <br><br>or you can call us on : <b>9********9</b>
     </h5>
-
-        <h5 class="container py-3">Post Your Query Here!</h5>
-        <form method="post" action="/contact">
+</div>
+<div class="container py-3">
+    <h5 class="container py-3">Post Your Query Here!</h5>
+    <form method="post" action="/contact">
         {% csrf_token %}
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Your Name:</span>
@@ -23,7 +24,7 @@
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Description :</span>
             <textarea name="contact_description" id="contact_description" type="text" class="form-control" cols="30"
-                rows="2" required></textarea>
+                rows="4" required></textarea>
         </div>
         <center><button class="btn btn-primary mb-5" type="submit">Submit</button></center>
     </form>
