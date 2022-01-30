@@ -1,5 +1,4 @@
 from email import message
-from pyexpat.errors import messages
 from tabnanny import check
 from urllib import request
 from django.shortcuts import render , HttpResponse
@@ -137,6 +136,7 @@ def participantReg(request):
             #         + "\n" + "\n" + "Thank you." + "\n" + "Parth Managment"
             # send_mail(subject, message, email_from , email_to)
 
+
             # account_sid = ''
             # auth_token = ''
             # client = Client(account_sid, auth_token)
@@ -157,7 +157,7 @@ def participantReg(request):
             #                     from_='+16072846013',
             #                     to='+91' + participant_contact
             #                 )
-            #
+            
             messages.success(request, 'Thank You! for registering in the event')
             return render(request, 'participantReg.html' )
 
